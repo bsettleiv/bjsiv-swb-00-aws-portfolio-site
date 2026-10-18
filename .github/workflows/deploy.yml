@@ -12,8 +12,8 @@ permissions:
 env:
   AWS_REGION: us-east-1
   BUCKET: bjsiv-swb-00-sto-s3-portfolio
-  DISTRIBUTION_ID: dad3op66l5gc2
-  ROLE_ARN: arn:aws:iam::869482775166:role/bjsiv-swb-00-iam-policy-portfolio-gha-deploy
+  DISTRIBUTION_ID: EAUPIMCGL44O9
+  ROLE_ARN: arn:aws:iam::869482775166:role/bjsiv-swb-00-iam-role-gha-deploy
 
 jobs:
   deploy:
