@@ -1,0 +1,38 @@
+name: Deploy to S3
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  id-token: write   # lets the job request an OIDC token
+  contents: read
+
+env:
+  AWS_REGION: us-east-1
+  BUCKET: bjsiv-swb-00-sto-s3-portfolio
+  DISTRIBUTION_ID: dad3op66l5gc2
+  ROLE_ARN: arn:aws:iam::869482775166:role/bjsiv-swb-00-iam-role-portfolio-gha
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Assume AWS deploy role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync site to S3
+        run: aws s3 sync ./site s3://${{ env.BUCKET }} --delete
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.DISTRIBUTION_ID }} \
+            --paths "/*"
