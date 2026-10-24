@@ -8,7 +8,7 @@ Personal portfolio site for Mr. Settle (bsettle.net). Static site, deployed to A
 ## Current status
 - Placeholder site is live at https://www.bsettle.net and deploys end to end.
 - Deploy pipeline (GitHub Actions + OIDC) is working.
-- Next: codify the AWS infrastructure in Terraform.
+- Next: codify the AWS infrastructure in Terraform (platform repo first, then this repo). See `docs/decisions.md`.
 - Site code (Astro) has not been started. Do not write site code unless asked.
 
 ## Architecture
@@ -53,5 +53,6 @@ Known gap: the IAM role name lacks `portfolio`. Left as-is; only fix if recreati
 - When a decision changes, update `docs/decisions.md` in the same PR.
 
 ## Upcoming
-- Terraform codification of the S3 bucket, bucket policy, CloudFront distribution, and the OIDC role + policy. State storage still to be decided (local vs. remote S3 with locking).
+- Platform repo `bjsiv-swb-00-aws-platform`: state bucket (S3, native locking, key per project), GitHub OIDC provider, all IAM roles/policies, shared modules and reusable workflows.
+- This repo: Terraform for the S3 bucket, bucket policy, CloudFront distribution, and ACM cert, imported rather than recreated. No IAM here.
 - Astro site: not started. Design is dark, fluid, and cohesive, with no bright or crowded palettes.
